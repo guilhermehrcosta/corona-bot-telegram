@@ -30,7 +30,7 @@ class SendMessageTelegram extends Command
             $confirmed = $response['active'];
             if ($confirmed != Cache::get('confirmed', 0)) {
                 Cache::put('confirmed', $confirmed, Carbon::now()->addYear(1));
-                $this->sendMessage($response['active']);
+                $this->sendMessage($response);
             }
         }
 
