@@ -24,14 +24,13 @@ class SendMessageTelegram extends Command
 
     public function handle()
     {
+        $response = Http::get('https://coronavirus-19-api.herokuapp.com/countries/brazil')->json();
 
-        $response = Http::get('https://covid19-brazil-api.now.sh/api/report/v1/brazil')->json();
-
-        if (isset($response['data']['confirmed'])) {
-            $confirmed       = $response['data']['confirmed'];
+        if (isset($response['country'])) {
+            $confirmed = $response['active'];
             if ($confirmed != Cache::get('confirmed', 0)) {
                 Cache::put('confirmed', $confirmed, Carbon::now()->addYear(1));
-                $this->sendMessage($response['data']);
+                $this->sendMessage($response['active']);
             }
         }
 
@@ -40,7 +39,7 @@ class SendMessageTelegram extends Command
 
     private function sendMessage($response)
     {
-        $text = "*Casos Suspeitos:* {$response['cases']}\n*Casos Confirmados:* {$response['confirmed']}\n*Mortes:* {$response['deaths']}";
+        $text = "*Casos Suspeitos:* {$response['cases']}\n*Casos Confirmados:* {$response['active']}\n*Mortes:* {$response['deaths']}";
         $this->telegram->sendMessage([
             'chat_id'    => '@corona_virus_br',
             'text'       => $text,
