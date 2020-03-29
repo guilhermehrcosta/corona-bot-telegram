@@ -39,7 +39,7 @@ class SendMessageTelegram extends Command
 
     private function sendMessage($response)
     {
-        $text = "*Casos Suspeitos:* {$response['cases']}\n*Casos Confirmados:* {$response['active']}\n*Mortes:* {$response['deaths']}";
+        $text = "*Total de casos:* {$response['cases']}\n*Casos recuperados: {$response['recovered']}*\n*Casos confirmados:* {$response['active']}\n*Mortes:* {$response['deaths']}";
         $this->telegram->sendMessage([
             'chat_id'    => '@corona_virus_br',
             'text'       => $text,
